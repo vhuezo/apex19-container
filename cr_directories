@@ -1,0 +1,4 @@
+mkdir -p /u01/app/oracle/product/18.0.0/dbhome_1
+mkdir -p /u02/oradata
+chown -R oracle:oinstall /u01 /u02
+chmod -R 775 /u01 /u02

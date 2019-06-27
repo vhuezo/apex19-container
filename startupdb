@@ -1,0 +1,10 @@
+source /home/oracle/.bashrc
+
+$ORACLE_HOME/bin/dbstart $ORACLE_HOME
+$ORACLE_HOME/bin/lsnrctl status
+$ORACLE_HOME/bin/sqlplus / as sysdba <<EOF
+show sga
+exit
+EOF
+
+sleep infinity
