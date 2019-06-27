@@ -9,7 +9,7 @@ COPY .bashrc /home/oracle/.bashrc
 
 USER oracle
 #COPY LINUX.X64_180000_db_home.zip /tmp/LINUX.X64_180000_db_home.zip
-RUN ["/usr/bin/wget","-quiet","https://www.dropbox.com/s/wg5wtn2ldnu5jyd/LINUX.X64_180000_db_home.zip?dl=0","-O","/tmp/LINUX.X64_180000_db_home.zip"]
+RUN ["/usr/bin/wget","https://www.dropbox.com/s/wg5wtn2ldnu5jyd/LINUX.X64_180000_db_home.zip?dl=0","-qO","/tmp/LINUX.X64_180000_db_home.zip"]
 WORKDIR /u01/app/oracle/product/18.0.0/dbhome_1
 RUN ["/usr/bin/unzip","-oq","/tmp/LINUX.X64_180000_db_home.zip"]
 COPY runInstaller_silent /tmp/runInstaller_silent
@@ -20,7 +20,7 @@ RUN ["/u01/app/oraInventory/orainstRoot.sh"]
 RUN ["/u01/app/oracle/product/18.0.0/dbhome_1/root.sh"]
 
 USER oracle
-RUN ["/usr/bin/wget","-quiet","https://www.dropbox.com/s/0pegveyvlimafym/apex_19.1_en.zip?dl=0","-O","/tmp/apex_19.1_en.zip"]
+RUN ["/usr/bin/wget","https://www.dropbox.com/s/0pegveyvlimafym/apex_19.1_en.zip?dl=0","-qO","/tmp/apex_19.1_en.zip"]
 #COPY apex_19.1_en.zip /tmp/apex_19.1_en.zip
 RUN ["mkdir","/u01/app/oracle/apex19"]
 WORKDIR /u01/app/oracle/apex19
