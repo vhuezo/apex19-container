@@ -1,8 +1,8 @@
 FROM centos
-RUN ["/usr/bin/yum","update","-y"]
-RUN ["/usr/bin/yum","install","https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-18c-1.0-1.el7.x86_64.rpm","-y"]
-RUN ["/usr/bin/yum","install","gcc-c++","-y"]
-RUN ["/usr/bin/yum","install","wget","-y"]
+RUN ["/usr/bin/yum","update","-y","-q"]
+RUN ["/usr/bin/yum","install","https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-18c-1.0-1.el7.x86_64.rpm","-y","-q"]
+RUN ["/usr/bin/yum","install","gcc-c++","-y","-q"]
+RUN ["/usr/bin/yum","install","wget","-y","-q"]
 COPY cr_directories /tmp/cr_directories
 RUN ["/bin/bash","/tmp/cr_directories"]
 COPY .bashrc /home/oracle/.bashrc
