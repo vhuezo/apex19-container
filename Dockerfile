@@ -12,6 +12,7 @@ USER oracle
 RUN ["/usr/bin/wget","https://www.dropbox.com/s/wg5wtn2ldnu5jyd/LINUX.X64_180000_db_home.zip?dl=0","-qO","/tmp/LINUX.X64_180000_db_home.zip"]
 WORKDIR /u01/app/oracle/product/18.0.0/dbhome_1
 RUN ["/usr/bin/unzip","-oq","/tmp/LINUX.X64_180000_db_home.zip"]
+RUN ["rm","-f","/tmp/LINUX.X64_180000_db_home.zip"]
 COPY runInstaller_silent /tmp/runInstaller_silent
 RUN ["/bin/bash","/tmp/runInstaller_silent"]
 
@@ -24,6 +25,7 @@ RUN ["/usr/bin/wget","https://www.dropbox.com/s/0pegveyvlimafym/apex_19.1_en.zip
 #COPY apex_19.1_en.zip /tmp/apex_19.1_en.zip
 WORKDIR /u01/app/oracle/apex19
 RUN ["/usr/bin/unzip","-oq","/tmp/apex_19.1_en.zip"]
+RUN ["rm","-f","/tmp/apex_19.1_en.zip"]
 COPY netca_silent /tmp/netca_silent
 RUN ["/bin/bash","/tmp/netca_silent"]
 COPY listener.ora /u01/app/oracle/product/18.0.0/dbhome_1/network/admin/listener.ora
