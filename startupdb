@@ -1,6 +1,16 @@
+#!/bin/bash
 source /home/oracle/.bashrc
 
 $ORACLE_HOME/bin/dbstart $ORACLE_HOME
+
+if [ $LOCAL = 'Y' ]; then
+$ORACLE_HOME/bin/sqlplus / as sysdba <<EOF
+alter session set container=pdb1;
+EXEC DBMS_XDB.sethttpport(8080);
+exit
+EOF
+fi
+
 $ORACLE_HOME/bin/lsnrctl status
 $ORACLE_HOME/bin/sqlplus / as sysdba <<EOF
 show sga
