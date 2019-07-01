@@ -4,7 +4,7 @@ Oracle database 18c with Apex 19.1 configured
 
 How to run container  
 
-PERSISTENT DATABASE (Use -v to create persistent volume on Docker VM, below as an example)
+PERSISTENT DATABASE (Use -v to create persistent volume on Docker VM, below as an example)  
 -v apexdb_u02:/u02
 
 LOCAL XDB MODE  
