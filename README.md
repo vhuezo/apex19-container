@@ -1,23 +1,27 @@
 # dbserv1-dockerhub
 
-Oracle database 18c with Apex 19.1 configured  
+Oracle database 18c/Apex 19.1
 
-How to run container  
+How Oracle Apex containers work?  
+The whole thing consists of 2 containers:  
+henryhhl18/apexdb - Oracle 18c and Apex 19.1  
+henryhhl18/ords - Tomcat and pre-built ORDS java web application  
 
-PERSISTENT DATABASE (Use -v to create persistent volume on Docker VM, below as an example)  
+How to use this container?  
+
+Launch from Windows powershell  
+Start-BitsTransfer -Source "https://gist.githubusercontent.com/henryliu18/9b9b6ae7361a3d2425ffc702d00f376a/raw/f4ea614f0e80f62610b9fede701e9b9880ba363a/docker-compose" -Destination "docker-compose.yml"  
+docker-compose up -d
+
+Launch from Linux  
+wget https://gist.githubusercontent.com/henryliu18/9b9b6ae7361a3d2425ffc702d00f376a/raw/f4ea614f0e80f62610b9fede701e9b9880ba363a/docker-compose -O ./docker-compose.yml  
+docker-compose up -d
+
+Persistent database storage (Use -v to create/mount persistent volume apexdb_u02 on Docker VM to apexdb container's mount point /u02)  
 -v apexdb_u02:/u02
 
-LOCAL XDB MODE  
-docker container run -d --hostname dbserv1 --name dbserv1 -p 8080:8080 --env LOCAL=Y henryhhl18/apexdb  
+Apex 19.1 Login page http://localhost:8080/ords  
 
-2 TIER MODE (Tomcat as web tier)  
-docker container run -d --hostname dbserv1 --name dbserv1 henryhhl18/apexdb  
-
-
-Navigate to http://localhost:8080/apex or http://localhost:8080/ords  
-
-you will be asked to change that password at first time login  
-
-Workspace: internal  
+Workspace: INTERNAL  
 Username: ADMIN  
 Password: changeme123  
