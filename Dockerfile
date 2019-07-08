@@ -17,10 +17,9 @@ mkdir -p ${APEX_HOME_BUILD} && \
 mkdir -p ${ORACLE_DATA_BUILD} && \
 chown -R oracle:oinstall /u01 /u02 && \
 chmod -R 775 /u01 /u02
-COPY .bashrc /home/oracle/.bashrc
 
 USER oracle
-
+COPY .bashrc /home/oracle/.bashrc
 RUN /usr/bin/wget ${DB_URL} -qO ${DB_ZIP}
 WORKDIR ${ORACLE_HOME_BUILD}
 RUN /usr/bin/unzip -oq ${DB_ZIP}
