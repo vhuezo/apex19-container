@@ -61,7 +61,7 @@ COPY listener.ora ${ORACLE_HOME_BUILD}/network/admin/listener.ora
 
 # COPY dbca_silent /tmp/dbca_silent
 # RUN ["/bin/bash","/tmp/dbca_silent"]
-RUN ${ORACLE_HOME_BUILD}/bin/dbca -silent -createDatabase \
+RUN /u01/app/oracle/product/18.0.0/dbhome_1/bin/dbca -silent -createDatabase \
 -templateName General_Purpose.dbc \
 -gdbname cdb1 \
 -sid cdb1 \
@@ -77,7 +77,7 @@ RUN ${ORACLE_HOME_BUILD}/bin/dbca -silent -createDatabase \
 -automaticMemoryManagement false \
 -totalMemory 1500 \
 -storageType FS \
--datafileDestination ${ORACLE_DATA_BUILD} \
+-datafileDestination /u02/oradata \
 -redoLogFileSize 50 \
 -emConfiguration NONE \
 -ignorePreReqs
