@@ -33,7 +33,8 @@ RUN /u01/app/oracle/product/18.0.0/dbhome_1/runInstaller -ignorePrereq -waitforc
     oracle.install.db.OSKMDBA_GROUP=dba                                        \
     oracle.install.db.OSRACDBA_GROUP=dba                                       \
     SECURITY_UPDATES_VIA_MYORACLESUPPORT=false                                 \
-    DECLINE_SECURITY_UPDATES=true
+    DECLINE_SECURITY_UPDATES=true || \
+    sleep 1
 
 USER root
 RUN ["/u01/app/oraInventory/orainstRoot.sh"]
