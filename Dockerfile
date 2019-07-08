@@ -46,8 +46,8 @@ RUN ${ORA_INVENTORY_BUILD}/orainstRoot.sh
 RUN ${ORACLE_HOME_BUILD}/root.sh
 
 USER oracle
-RUN /usr/bin/wget ${APEX_URL} -qO ${APEX_ZIP}
 WORKDIR ${APEX_HOME_BUILD}
+RUN /usr/bin/wget ${APEX_URL} -qO ${APEX_ZIP}
 RUN /usr/bin/unzip -oq ${APEX_ZIP}
 
 RUN ${ORACLE_HOME_BUILD}/bin/netca /silent /responsefile ${ORACLE_HOME_BUILD}/assistants/netca/netca.rsp
