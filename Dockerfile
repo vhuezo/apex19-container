@@ -20,8 +20,8 @@ chmod -R 775 /u01 /u02
 
 USER oracle
 COPY .bashrc /home/oracle/.bashrc
-RUN /usr/bin/wget ${DB_URL} -qO ${DB_ZIP}
 WORKDIR ${ORACLE_HOME_BUILD}
+RUN /usr/bin/wget ${DB_URL} -qO ${DB_ZIP}
 RUN /usr/bin/unzip -oq ${DB_ZIP}
 RUN ${ORACLE_HOME_BUILD}/runInstaller -ignorePrereq -waitforcompletion -silent \
     oracle.install.option=INSTALL_DB_SWONLY                                    \
