@@ -45,11 +45,36 @@ RUN /usr/bin/wget ${APEX_ZIP} -qO /tmp/apex_19.1_en.zip
 RUN ["mkdir","/u01/app/oracle/apex19"]
 WORKDIR /u01/app/oracle/apex19
 RUN ["/usr/bin/unzip","-oq","/tmp/apex_19.1_en.zip"]
-COPY netca_silent /tmp/netca_silent
-RUN ["/bin/bash","/tmp/netca_silent"]
+
+# COPY netca_silent /tmp/netca_silent
+# RUN ["/bin/bash","/tmp/netca_silent"]
+RUN /u01/app/oracle/product/18.0.0/dbhome_1/bin/netca /silent /responsefile /u01/app/oracle/product/18.0.0/dbhome_1/assistants/netca/netca.rsp
+
 COPY listener.ora /u01/app/oracle/product/18.0.0/dbhome_1/network/admin/listener.ora
-COPY dbca_silent /tmp/dbca_silent
-RUN ["/bin/bash","/tmp/dbca_silent"]
+
+# COPY dbca_silent /tmp/dbca_silent
+# RUN ["/bin/bash","/tmp/dbca_silent"]
+RUN /u01/app/oracle/product/18.0.0/dbhome_1/bin/dbca -silent -createDatabase \
+-templateName General_Purpose.dbc \
+-gdbname cdb1 \
+-sid cdb1 \
+-responseFile NO_VALUE \
+-characterSet AL32UTF8 \
+-sysPassword SysPassword1 \
+-systemPassword SysPassword1 \
+-createAsContainerDatabase true \
+-numberOfPDBs 1 \
+-pdbName pdb1 \
+-pdbAdminPassword PdbPassword1 \
+-databaseType MULTIPURPOSE \
+-automaticMemoryManagement false \
+-totalMemory 1500 \
+-storageType FS \
+-datafileDestination /u02/oradata \
+-redoLogFileSize 50 \
+-emConfiguration NONE \
+-ignorePreReqs
+
 COPY oratab /etc/oratab
 COPY runsql /tmp/runsql
 COPY inst_apex.sql /tmp/inst_apex.sql
