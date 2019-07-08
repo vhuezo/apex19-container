@@ -26,13 +26,13 @@ WORKDIR ${ORACLE_HOME_BUILD}
 RUN /usr/bin/unzip -oq ${DB_ZIP}
 #COPY runInstaller_silent /tmp/runInstaller_silent
 #RUN ["/bin/bash","/tmp/runInstaller_silent"]
-RUN ${ORACLE_HOME_BUILD}/runInstaller -ignorePrereq -waitforcompletion -silent \
+RUN /u01/app/oracle/product/18.0.0/dbhome_1/runInstaller -ignorePrereq -waitforcompletion -silent \
     oracle.install.option=INSTALL_DB_SWONLY                                    \
     ORACLE_HOSTNAME=dbserv1                                                    \
     UNIX_GROUP_NAME=oinstall                                                   \
-    INVENTORY_LOCATION=${ORA_INVENTORY_BUILD}                                  \
+    INVENTORY_LOCATION=/u01/app/oraInventory                                   \
     SELECTED_LANGUAGES=en,en_GB                                                \
-    ORACLE_HOME=${ORACLE_HOME_BUILD}                                           \
+    ORACLE_HOME=/u01/app/oracle/product/18.0.0/dbhome_1                        \
     ORACLE_BASE=/u01/app/oracle                                                \
     oracle.install.db.InstallEdition=EE                                        \
     oracle.install.db.OSDBA_GROUP=dba                                          \
