@@ -1,7 +1,3 @@
-#
-
-
-
 # This file is used by ORACLE utilities.  It is created by root.sh
 # and updated by either Database Configuration Assistant while creating
 # a database or ASM Configuration Assistant while creating ASM instance.
@@ -20,4 +16,4 @@
 # Multiple entries with the same $ORACLE_SID are not allowed.
 #
 #
-cdb1:/u01/app/oracle/product/18.0.0/dbhome_1:Y
+cdb1:${ORACLE_HOME_BUILD}:Y

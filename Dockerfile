@@ -21,11 +21,10 @@ COPY .bashrc /home/oracle/.bashrc
 
 USER oracle
 
-RUN /usr/bin/wget ${DB_URL} -qO ${DB_ZIP}
+#RUN /usr/bin/wget ${DB_URL} -qO ${DB_ZIP}
+COPY LINUX.X64_180000_db_home.zip /tmp/LINUX.X64_180000_db_home.zip
 WORKDIR ${ORACLE_HOME_BUILD}
 RUN /usr/bin/unzip -oq ${DB_ZIP}
-#COPY runInstaller_silent /tmp/runInstaller_silent
-#RUN ["/bin/bash","/tmp/runInstaller_silent"]
 RUN ${ORACLE_HOME_BUILD}/runInstaller -ignorePrereq -waitforcompletion -silent \
     oracle.install.option=INSTALL_DB_SWONLY                                    \
     ORACLE_HOSTNAME=dbserv1                                                    \
@@ -49,38 +48,16 @@ RUN ${ORA_INVENTORY_BUILD}/orainstRoot.sh
 RUN ${ORACLE_HOME_BUILD}/root.sh
 
 USER oracle
-RUN /usr/bin/wget ${APEX_URL} -qO ${APEX_ZIP}
+#RUN /usr/bin/wget ${APEX_URL} -qO ${APEX_ZIP}
+COPY apex_19.1_en.zip /tmp/apex_19.1_en.zip
 WORKDIR ${APEX_HOME_BUILD}
 RUN /usr/bin/unzip -oq ${APEX_ZIP}
 
-# COPY netca_silent /tmp/netca_silent
-# RUN ["/bin/bash","/tmp/netca_silent"]
 RUN ${ORACLE_HOME_BUILD}/bin/netca /silent /responsefile ${ORACLE_HOME_BUILD}/assistants/netca/netca.rsp
-
 COPY listener.ora ${ORACLE_HOME_BUILD}/network/admin/listener.ora
 
-# COPY dbca_silent /tmp/dbca_silent
-# RUN ["/bin/bash","/tmp/dbca_silent"]
-RUN /u01/app/oracle/product/18.0.0/dbhome_1/bin/dbca -silent -createDatabase \
--templateName General_Purpose.dbc \
--gdbname cdb1 \
--sid cdb1 \
--responseFile NO_VALUE \
--characterSet AL32UTF8 \
--sysPassword SysPassword1 \
--systemPassword SysPassword1 \
--createAsContainerDatabase true \
--numberOfPDBs 1 \
--pdbName pdb1 \
--pdbAdminPassword PdbPassword1 \
--databaseType MULTIPURPOSE \
--automaticMemoryManagement false \
--totalMemory 1500 \
--storageType FS \
--datafileDestination /u02/oradata \
--redoLogFileSize 50 \
--emConfiguration NONE \
--ignorePreReqs
+COPY dbca_silent /tmp/dbca_silent
+RUN /bin/bash /tmp/dbca_silent
 
 COPY oratab /etc/oratab
 COPY runsql /tmp/runsql

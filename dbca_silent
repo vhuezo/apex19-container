@@ -1,4 +1,4 @@
-/u01/app/oracle/product/18.0.0/dbhome_1/bin/dbca -silent -createDatabase \
+${ORACLE_HOME_BUILD}/bin/dbca -silent -createDatabase \
 -templateName General_Purpose.dbc \
 -gdbname cdb1 \
 -sid cdb1 \
@@ -14,7 +14,7 @@
 -automaticMemoryManagement false \
 -totalMemory 1500 \
 -storageType FS \
--datafileDestination /u02/oradata \
+-datafileDestination ${ORACLE_DATA_BUILD} \
 -redoLogFileSize 50 \
 -emConfiguration NONE \
 -ignorePreReqs
