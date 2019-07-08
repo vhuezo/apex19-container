@@ -21,8 +21,7 @@ COPY .bashrc /home/oracle/.bashrc
 
 USER oracle
 
-#RUN /usr/bin/wget ${DB_URL} -qO ${DB_ZIP}
-COPY LINUX.X64_180000_db_home.zip /tmp/LINUX.X64_180000_db_home.zip
+RUN /usr/bin/wget ${DB_URL} -qO ${DB_ZIP}
 WORKDIR ${ORACLE_HOME_BUILD}
 RUN /usr/bin/unzip -oq ${DB_ZIP}
 RUN ${ORACLE_HOME_BUILD}/runInstaller -ignorePrereq -waitforcompletion -silent \
@@ -48,8 +47,7 @@ RUN ${ORA_INVENTORY_BUILD}/orainstRoot.sh
 RUN ${ORACLE_HOME_BUILD}/root.sh
 
 USER oracle
-#RUN /usr/bin/wget ${APEX_URL} -qO ${APEX_ZIP}
-COPY apex_19.1_en.zip /tmp/apex_19.1_en.zip
+RUN /usr/bin/wget ${APEX_URL} -qO ${APEX_ZIP}
 WORKDIR ${APEX_HOME_BUILD}
 RUN /usr/bin/unzip -oq ${APEX_ZIP}
 
