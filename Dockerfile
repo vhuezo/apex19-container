@@ -3,8 +3,7 @@ RUN /usr/bin/yum update -y -q && \
   /usr/bin/yum install https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-18c-1.0-1.el7.x86_64.rpm -y -q && \
   /usr/bin/yum install gcc-c++ -y -q && \
   /usr/bin/yum install wget -y -q
-#COPY cr_directories /tmp/cr_directories
-#RUN ["/bin/bash","/tmp/cr_directories"]
+
 RUN mkdir -p /u01/app/oracle/product/18.0.0/dbhome_1 && \
 mkdir -p /u02/oradata && \
 chown -R oracle:oinstall /u01 /u02 && \
