@@ -24,8 +24,8 @@ chmod -R 775 /u01 /u02
 USER oracle
 COPY .bashrc /home/oracle/.bashrc
 WORKDIR ${ORACLE_HOME_ARG}
-# RUN /usr/bin/wget ${DB_URL_ARG} -qO ${DB_ZIP_ARG}
-COPY LINUX.X64_180000_db_home.zip ${DB_ZIP_ARG}
+RUN /usr/bin/wget ${DB_URL_ARG} -qO ${DB_ZIP_ARG}
+# COPY LINUX.X64_180000_db_home.zip ${DB_ZIP_ARG}
 RUN /usr/bin/unzip -oq ${DB_ZIP_ARG}
 RUN ${ORACLE_HOME_ARG}/runInstaller -ignorePrereq -waitforcompletion -silent \
     oracle.install.option=INSTALL_DB_SWONLY                                    \
@@ -51,8 +51,8 @@ RUN ${ORACLE_HOME_ARG}/root.sh
 
 USER oracle
 WORKDIR ${APEX_HOME_ARG}
-# RUN /usr/bin/wget ${APEX_URL_ARG} -qO ${APEX_ZIP_ARG}
-COPY apex_19.1_en.zip ${APEX_ZIP_ARG}
+RUN /usr/bin/wget ${APEX_URL_ARG} -qO ${APEX_ZIP_ARG}
+# COPY apex_19.1_en.zip ${APEX_ZIP_ARG}
 RUN /usr/bin/unzip -oq ${APEX_ZIP_ARG}
 
 RUN ${ORACLE_HOME_ARG}/bin/netca /silent /responsefile ${ORACLE_HOME_ARG}/assistants/netca/netca.rsp
@@ -71,6 +71,7 @@ USER oracle
 RUN echo ${CDB_NAME_ARG}:${ORACLE_HOME_ARG}:Y > /etc/oratab
 COPY runsql.sh /tmp/runsql.sh
 COPY inst_apex.sql /tmp/inst_apex.sql
+COPY inst_apex2.sql /tmp/inst_apex2.sql
 WORKDIR ${APEX_HOME_ARG}/apex
 RUN /bin/bash /tmp/runsql.sh
 EXPOSE 1521
