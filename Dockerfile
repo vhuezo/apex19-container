@@ -20,8 +20,10 @@ RUN /usr/bin/yum update -y -q && \
 RUN mkdir -p ${ORACLE_HOME_ARG} && \
 mkdir -p ${APEX_HOME_ARG} && \
 mkdir -p ${ORACLE_DATA_ARG} && \
-chown -R oracle:oinstall /u01 /u02 && \
-chmod -R 775 /u01 /u02
+chown -R oracle:oinstall $(echo ${ORACLE_HOME_ARG} | cut -d/ -f1-2) && \
+chown -R oracle:oinstall $(echo ${ORACLE_DATA_ARG} | cut -d/ -f1-2) && \
+chmod -R 775 $(echo ${ORACLE_HOME_ARG} | cut -d/ -f1-2) && \
+chmod -R 775 $(echo ${ORACLE_DATA_ARG} | cut -d/ -f1-2)
 
 USER oracle
 COPY .bashrc /home/oracle/.bashrc
