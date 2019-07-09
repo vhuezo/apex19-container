@@ -10,6 +10,8 @@ ARG APEX_ZIP_ARG="/tmp/apex_19.1_en.zip"
 ARG CDB_NAME_ARG="cdb1"
 ARG PDB_NAME_ARG="pdb1"
 ARG ORACLE_HOSTNAME_ARG="dbserv1"
+ARG ORACLE_BASE_ARG="/u01/app/oracle"
+ARG LISTENER_PORT_ARG="1521"
 RUN /usr/bin/yum update -y -q && \
 /usr/bin/yum install https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-18c-1.0-1.el7.x86_64.rpm -y -q && \
 /usr/bin/yum install gcc-c++ -y -q && \
@@ -34,7 +36,7 @@ RUN ${ORACLE_HOME_ARG}/runInstaller -ignorePrereq -waitforcompletion -silent \
     INVENTORY_LOCATION=${ORA_INVENTORY_ARG}                                    \
     SELECTED_LANGUAGES=en,en_GB                                                \
     ORACLE_HOME=${ORACLE_HOME_ARG}                                             \
-    ORACLE_BASE=/u01/app/oracle                                                \
+    ORACLE_BASE=${ORACLE_BASE_ARG}                                             \
     oracle.install.db.InstallEdition=EE                                        \
     oracle.install.db.OSDBA_GROUP=dba                                          \
     oracle.install.db.OSBACKUPDBA_GROUP=dba                                    \
@@ -59,7 +61,7 @@ RUN ${ORACLE_HOME_ARG}/bin/netca /silent /responsefile ${ORACLE_HOME_ARG}/assist
 RUN echo "LISTENER = \
   (DESCRIPTION_LIST = \
     (DESCRIPTION = \
-      (ADDRESS = (PROTOCOL = TCP)(HOST = ${ORACLE_HOSTNAME_ARG})(PORT = 1521)) \
+      (ADDRESS = (PROTOCOL = TCP)(HOST = ${ORACLE_HOSTNAME_ARG})(PORT = ${LISTENER_PORT_ARG})) \
       (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521)) \
     ) \
   )" > ${ORACLE_HOME_ARG}/network/admin/listener.ora
@@ -74,6 +76,6 @@ COPY inst_apex.sql /tmp/inst_apex.sql
 COPY inst_apex2.sql /tmp/inst_apex2.sql
 WORKDIR ${APEX_HOME_ARG}/apex
 RUN /bin/bash /tmp/runsql.sh
-EXPOSE 1521
+EXPOSE ${LISTENER_PORT_ARG}
 COPY startupdb /tmp/startupdb
 CMD ["/bin/bash","/tmp/startupdb"]
