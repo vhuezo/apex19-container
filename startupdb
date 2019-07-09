@@ -7,7 +7,8 @@ $ORACLE_HOME/bin/dbstart $ORACLE_HOME
 #only step in when $LOCAL is not empty and $LOCAL=Y
 if [ ! -z ${LOCAL} ] && [ ${LOCAL} = 'Y' ]; then
 $ORACLE_HOME/bin/sqlplus / as sysdba <<EOF
-alter session set container=pdb1;
+alter session set container=&1;
+$PDB_NAME
 EXEC DBMS_XDB.sethttpport(8080);
 exit
 EOF

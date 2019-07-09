@@ -1,6 +1,6 @@
-ALTER PLUGGABLE DATABASE pdb1 OPEN READ WRITE;
-ALTER PLUGGABLE DATABASE pdb1 SAVE STATE;
-alter session set container=pdb1;
+ALTER PLUGGABLE DATABASE &1 OPEN READ WRITE;
+ALTER PLUGGABLE DATABASE &1 SAVE STATE;
+alter session set container=&1;
 ALTER SYSTEM SET db_create_file_dest = '/u02/oradata';
 CREATE TABLESPACE APEX_TABLESPACE DATAFILE SIZE 100M AUTOEXTEND ON NEXT 100M;
 -- @apexins.sql tablespace_apex tablespace_files tablespace_temp images
@@ -28,7 +28,7 @@ BEGIN
   EXECUTE IMMEDIATE 'ALTER USER anonymous IDENTIFIED BY ' || l_passwd || ' ACCOUNT UNLOCK CONTAINER=ALL';
 END;
 /
-alter session set container=pdb1;
+alter session set container=&1;
 ALTER USER APEX_PUBLIC_USER ACCOUNT UNLOCK;
 ALTER USER APEX_PUBLIC_USER IDENTIFIED BY ApexOrdsPass1;
 BEGIN
