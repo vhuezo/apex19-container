@@ -3,9 +3,9 @@ ARG ORACLE_HOME_ARG="/u01/app/oracle/product/18.0.0/dbhome_1"
 ARG APEX_HOME_ARG="/u01/app/oracle/apex19"
 ARG ORACLE_DATA_ARG="/u02/oradata"
 ARG ORA_INVENTORY_ARG="/u01/app/oraInventory"
-ARG DB_URL_ARG="https://p-def7.pcloud.com/cBZVSqWHpZ2iimMQZrmmvZZOivNA7Z2ZZcgJZkZ82QKf0Zu5Z67ZqJZ90Zw5Zy7Zy5Zm0ZUJZHJZ8JZ0VZNVZB0ZMX637ZRBuDKXsdykHz1LVUzVDLkjUG0KBX/LINUX.X64_180000_db_home.zip"
+ARG DB_URL_ARG="https://www.dropbox.com/s/ltp2qo4vwycur3s/LINUX.X64_180000_db_home.zip?dl=0"
 ARG DB_ZIP_ARG="/tmp/LINUX.X64_180000_db_home.zip"
-ARG APEX_URL_ARG="https://p-def3.pcloud.com/cBZxBQupQZWMXYMQZZZUavNA7Z2ZZcgJZkZM56G5Z77ZbZiXZU7Z70Zm7Zs5ZukZeXZ05Z6XZ0XZP7Zd5ZWy637ZkFUyfAothokrESzTSbXjszvj3zuV/apex_19.1_en.zip"
+ARG APEX_URL_ARG="https://www.dropbox.com/s/q998t8oiu6uxfjw/apex_19.1_en.zip?dl=0"
 ARG APEX_ZIP_ARG="/tmp/apex_19.1_en.zip"
 ARG CDB_NAME_ARG="cdb1"
 ARG PDB_NAME_ARG="pdb1"
@@ -30,7 +30,7 @@ chmod -R 775 $(echo ${ORACLE_DATA_ARG} | cut -d/ -f1-2)
 USER ${ORACLE_USER_ARG}
 RUN echo -e "# .bashrc\n\n# Source global definitions\nif [ -f /etc/bashrc ]; then\n        . /etc/bashrc\nfi\n\n# Uncomment the following line if you don't like systemctl's auto-paging feature:\n# export SYSTEMD_PAGER=\n\n# User specific aliases and functions\n\n# Oracle Settings\nexport TMP=/tmp\nexport TMPDIR=\$TMP\n\nexport ORACLE_HOSTNAME=${ORACLE_HOSTNAME_ARG}\nexport ORACLE_UNQNAME=${CDB_NAME_ARG}\nexport ORACLE_BASE=${ORACLE_BASE_ARG}\nexport ORACLE_HOME=${ORACLE_HOME_ARG}\nexport ORA_INVENTORY=${ORA_INVENTORY_ARG}\nexport ORACLE_SID=${CDB_NAME_ARG}\nexport PDB_NAME=${PDB_NAME_ARG}\nexport DATA_DIR=${ORACLE_DATA_ARG}\n\nexport PATH=/usr/sbin:/usr/local/bin:\$PATH\nexport PATH=\$ORACLE_HOME/bin:\$PATH\n\nexport LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib\nexport CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib\n" > ~/.bashrc
 WORKDIR ${ORACLE_HOME_ARG}
-RUN /usr/bin/wget ${DB_URL_ARG} -qO ${DB_ZIP_ARG}
+RUN time /usr/bin/wget ${DB_URL_ARG} -qO ${DB_ZIP_ARG}
 # COPY LINUX.X64_180000_db_home.zip ${DB_ZIP_ARG}
 RUN /usr/bin/unzip -oq ${DB_ZIP_ARG}
 RUN ${ORACLE_HOME_ARG}/runInstaller -ignorePrereq -waitforcompletion -silent \
@@ -57,7 +57,7 @@ RUN ${ORACLE_HOME_ARG}/root.sh
 
 USER ${ORACLE_USER_ARG}
 WORKDIR ${APEX_HOME_ARG}
-RUN /usr/bin/wget ${APEX_URL_ARG} -qO ${APEX_ZIP_ARG}
+RUN time /usr/bin/wget ${APEX_URL_ARG} -qO ${APEX_ZIP_ARG}
 # COPY apex_19.1_en.zip ${APEX_ZIP_ARG}
 RUN /usr/bin/unzip -oq ${APEX_ZIP_ARG}
 
