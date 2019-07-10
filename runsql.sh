@@ -1,5 +1,5 @@
 #source oracle environment variables ORACLE_HOME/ORACLE_SID..
-source /home/oracle/.bashrc
+source ~/.bashrc
 #start db instance and listener
 ${ORACLE_HOME_ARG}/bin/dbstart ${ORACLE_HOME_ARG}
 #sleep for 10 seconds

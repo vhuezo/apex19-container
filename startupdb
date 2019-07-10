@@ -1,5 +1,5 @@
 #!/bin/bash
-source /home/oracle/.bashrc
+source ~/.bashrc
 
 #startup database and listener
 $ORACLE_HOME/bin/dbstart $ORACLE_HOME
