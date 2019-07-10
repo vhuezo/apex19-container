@@ -34,21 +34,21 @@ RUN /usr/bin/wget ${DB_URL_ARG} -qO ${DB_ZIP_ARG}
 # COPY LINUX.X64_180000_db_home.zip ${DB_ZIP_ARG}
 RUN /usr/bin/unzip -oq ${DB_ZIP_ARG}
 RUN ${ORACLE_HOME_ARG}/runInstaller -ignorePrereq -waitforcompletion -silent \
-    oracle.install.option=INSTALL_DB_SWONLY                                    \
-    ORACLE_HOSTNAME=${ORACLE_HOSTNAME_ARG}                                     \
-    UNIX_GROUP_NAME=${ORACLE_GROUP}                                            \
-    INVENTORY_LOCATION=${ORA_INVENTORY_ARG}                                    \
-    SELECTED_LANGUAGES=en,en_GB                                                \
-    ORACLE_HOME=${ORACLE_HOME_ARG}                                             \
-    ORACLE_BASE=${ORACLE_BASE_ARG}                                             \
-    oracle.install.db.InstallEdition=EE                                        \
-    oracle.install.db.OSDBA_GROUP=dba                                          \
-    oracle.install.db.OSBACKUPDBA_GROUP=dba                                    \
-    oracle.install.db.OSDGDBA_GROUP=dba                                        \
-    oracle.install.db.OSKMDBA_GROUP=dba                                        \
-    oracle.install.db.OSRACDBA_GROUP=dba                                       \
-    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false                                 \
-    DECLINE_SECURITY_UPDATES=true ||                                           \
+    oracle.install.option=INSTALL_DB_SWONLY                                  \
+    ORACLE_HOSTNAME=${ORACLE_HOSTNAME_ARG}                                   \
+    UNIX_GROUP_NAME=${ORACLE_GROUP}                                          \
+    INVENTORY_LOCATION=${ORA_INVENTORY_ARG}                                  \
+    SELECTED_LANGUAGES=en,en_GB                                              \
+    ORACLE_HOME=${ORACLE_HOME_ARG}                                           \
+    ORACLE_BASE=${ORACLE_BASE_ARG}                                           \
+    oracle.install.db.InstallEdition=EE                                      \
+    oracle.install.db.OSDBA_GROUP=dba                                        \
+    oracle.install.db.OSBACKUPDBA_GROUP=dba                                  \
+    oracle.install.db.OSDGDBA_GROUP=dba                                      \
+    oracle.install.db.OSKMDBA_GROUP=dba                                      \
+    oracle.install.db.OSRACDBA_GROUP=dba                                     \
+    SECURITY_UPDATES_VIA_MYORACLESUPPORT=false                               \
+    DECLINE_SECURITY_UPDATES=true ||                                         \
     sleep 1
 
 USER root
