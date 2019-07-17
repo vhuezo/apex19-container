@@ -1,4 +1,4 @@
-LISTENER =
+LISTENER_CDB1 =
   (ADDRESS = (PROTOCOL = TCP)(HOST = dbserv1)(PORT = 1521))
 
 
