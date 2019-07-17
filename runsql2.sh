@@ -1,5 +1,5 @@
 #source oracle environment variables ORACLE_HOME/ORACLE_SID..
-source ~/.bashrc
+source /home/oracle/.bashrc
 #start db instance and listener
 ${ORACLE_HOME_ARG}/bin/dbstart ${ORACLE_HOME_ARG}
 #sleep for 10 seconds
@@ -8,16 +8,64 @@ sleep 10
 #create SUDS tablespace and user
 ${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba @/tmp/suds-db-user.sql
 #create DDL
-${ORACLE_HOME_ARG}/bin/sqlplus suds/suds@${PDB_NAME_ARG} @/tmp/export.sql
+export TWO_TASK="(DESCRIPTION=(ADDRESS=(PROTOCOL=BEQ) (PROGRAM=oracle) (ARGS='(DESCRIPTION=(ADDRESS=(PROTOCOL=BEQ)))')) (CONNECT_DATA=(SERVICE_name=pdb1)))"
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn suds/suds
+@/tmp/export.sql
+EOF
+
 #import SUDS WORKSPACE
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/SUDS.sql > /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/f9205.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/css.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/dynamic_action_plugin_com_clarifit_apexplugin_ir_column_grouping.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/f9205_img.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/item_type_plugin_com_af_plugin_jq_fileupload.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/region_type_plugin_com_af_plugin_jq_menu.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/region_type_plugin_com_blogspot_apexnotes_apex_rds_customizable.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/static_file.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/suds_attr_dict.sql >> /tmp/apex_apps.log
-sqlplus APEX_190100/changeme123@${PDB_NAME_ARG} @/tmp/suds_uidefaults.sql >> /tmp/apex_apps.log
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/SUDS.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/f9205.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/css.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/dynamic_action_plugin_com_clarifit_apexplugin_ir_column_grouping.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/f9205_img.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/item_type_plugin_com_af_plugin_jq_fileupload.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/region_type_plugin_com_af_plugin_jq_menu.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/region_type_plugin_com_blogspot_apexnotes_apex_rds_customizable.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/static_file.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/suds_attr_dict.sql
+EOF
+
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+conn APEX_190100/changeme123
+@/tmp/suds_uidefaults.sql
+EOF

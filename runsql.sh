@@ -12,6 +12,13 @@ ${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
 alter session set container=&1;
 $PDB_NAME
 @apex_rest_config.sql ApexOrdsPass1 ApexOrdsPass1
+exit;
+EOF
+
+#reset password and unlock APEX_190100
+${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba<<EOF
+alter session set container=&1;
+$PDB_NAME
 alter user APEX_190100 identified by changeme123 account unlock;
 exit;
 EOF

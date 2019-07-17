@@ -1,4 +1,4 @@
-FROM centos
+FROM centos AS stage1
 ARG ORACLE_HOME_ARG="/u01/app/oracle/product/18.0.0/dbhome_1"
 ARG APEX_HOME_ARG="/u01/app/oracle/apex19"
 ARG ORACLE_DATA_ARG="/u02/oradata"
@@ -62,7 +62,6 @@ COPY apex_19.1_en.zip ${APEX_ZIP_ARG}
 RUN /usr/bin/unzip -oq ${APEX_ZIP_ARG}
 
 RUN ${ORACLE_HOME_ARG}/bin/netca /silent /responsefile ${ORACLE_HOME_ARG}/assistants/netca/netca.rsp
-RUN echo -e "LISTENER = \n  (DESCRIPTION_LIST = \n    (DESCRIPTION = \n      (ADDRESS = (PROTOCOL = TCP)(HOST = ${ORACLE_HOSTNAME_ARG})(PORT = ${LISTENER_PORT_ARG}))\n      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))\n    )\n  )\n" > ${ORACLE_HOME_ARG}/network/admin/listener.ora
 
 COPY dbca_silent.sh /tmp/dbca_silent.sh
 RUN /bin/bash /tmp/dbca_silent.sh
@@ -94,8 +93,55 @@ COPY suds_attr_dict.sql /tmp
 COPY suds_uidefaults.sql /tmp
 COPY suds-db-user.sql /tmp
 COPY SUDS.sql /tmp
+COPY runsql2.sh /tmp/runsql2.sh
 RUN /bin/bash /tmp/runsql2.sh
+#RUN echo -e "LISTENER = \n  (DESCRIPTION_LIST = \n    (DESCRIPTION = \n      (ADDRESS = (PROTOCOL = TCP)(HOST = ${ORACLE_HOSTNAME_ARG})(PORT = ${LISTENER_PORT_ARG}))\n      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))\n    )\n  )\n" > ${ORACLE_HOME_ARG}/network/admin/listener.ora
+EXPOSE ${LISTENER_PORT_ARG}
+COPY startupdb /tmp/startupdb
+CMD ["/bin/bash","/tmp/startupdb"]
 
+#FINAL IMAGE BUILD STARTS HERE
+FROM centos
+ARG ORACLE_HOME_ARG="/u01/app/oracle/product/18.0.0/dbhome_1"
+ARG APEX_HOME_ARG="/u01/app/oracle/apex19"
+ARG ORACLE_DATA_ARG="/u02/oradata"
+ARG ORA_INVENTORY_ARG="/u01/app/oraInventory"
+ARG DB_URL_ARG="https://www.dropbox.com/s/ltp2qo4vwycur3s/LINUX.X64_180000_db_home.zip?dl=0"
+ARG DB_ZIP_ARG="/tmp/LINUX.X64_180000_db_home.zip"
+ARG APEX_URL_ARG="https://www.dropbox.com/s/q998t8oiu6uxfjw/apex_19.1_en.zip?dl=0"
+ARG APEX_ZIP_ARG="/tmp/apex_19.1_en.zip"
+ARG CDB_NAME_ARG="cdb1"
+ARG PDB_NAME_ARG="pdb1"
+ARG ORACLE_HOSTNAME_ARG="dbserv1"
+ARG ORACLE_BASE_ARG="/u01/app/oracle"
+ARG LISTENER_PORT_ARG="1521"
+ARG ORACLE_USER_ARG="oracle"
+ARG ORACLE_GROUP_ARG="oinstall"
+RUN /usr/bin/yum update -y -q && \
+/usr/bin/yum install https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-18c-1.0-1.el7.x86_64.rpm -y -q && \
+/usr/bin/yum install gcc-c++ -y -q && \
+/usr/bin/yum install wget -y -q
+
+RUN mkdir -p ${ORACLE_HOME_ARG} && \
+mkdir -p ${APEX_HOME_ARG} && \
+mkdir -p ${ORACLE_DATA_ARG} && \
+chown -R ${ORACLE_USER_ARG}:${ORACLE_GROUP_ARG} $(echo ${ORACLE_HOME_ARG} | cut -d/ -f1-2) && \
+chown -R ${ORACLE_USER_ARG}:${ORACLE_GROUP_ARG} $(echo ${ORACLE_DATA_ARG} | cut -d/ -f1-2) && \
+chmod -R 775 $(echo ${ORACLE_HOME_ARG} | cut -d/ -f1-2) && \
+chmod -R 775 $(echo ${ORACLE_DATA_ARG} | cut -d/ -f1-2)
+
+USER ${ORACLE_USER_ARG}
+COPY --from=stage1 --chown=oracle:oinstall /home/oracle/.bashrc /home/oracle/.bashrc
+COPY --from=stage1 --chown=oracle:oinstall /u01/ /u01/
+
+USER root
+RUN ${ORA_INVENTORY_ARG}/orainstRoot.sh
+RUN ${ORACLE_HOME_ARG}/root.sh
+
+USER ${ORACLE_USER_ARG}
+COPY --from=stage1 --chown=oracle:oinstall /u02/ /u02/
+COPY --from=stage1 --chown=oracle:oinstall /etc/oratab /etc/oratab
+RUN echo -e "LISTENER = \n  (DESCRIPTION_LIST = \n    (DESCRIPTION = \n      (ADDRESS = (PROTOCOL = TCP)(HOST = ${ORACLE_HOSTNAME_ARG})(PORT = ${LISTENER_PORT_ARG}))\n      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))\n    )\n  )\n" > ${ORACLE_HOME_ARG}/network/admin/listener.ora
 EXPOSE ${LISTENER_PORT_ARG}
 COPY startupdb /tmp/startupdb
 CMD ["/bin/bash","/tmp/startupdb"]
