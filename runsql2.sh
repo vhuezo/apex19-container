@@ -1,9 +1,5 @@
 #source oracle environment variables ORACLE_HOME/ORACLE_SID..
 source /home/oracle/.bashrc
-#start db instance and listener
-${ORACLE_HOME_ARG}/bin/dbstart ${ORACLE_HOME_ARG}
-#sleep for 10 seconds
-sleep 10
 
 #create SUDS tablespace and user
 ${ORACLE_HOME_ARG}/bin/sqlplus / as sysdba @/tmp/suds-db-user.sql
