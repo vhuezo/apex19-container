@@ -1,0 +1,21 @@
+LISTENER_CDB1 =
+  (ADDRESS = (PROTOCOL = TCP)(HOST = dbserv1)(PORT = 1521))
+
+
+CDB1 =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dbserv1)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = cdb1)
+    )
+  )
+
+PDB1 =
+(DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = dbserv1)(PORT = 1521))
+    (CONNECT_DATA =
+    (SERVER = DEDICATED)
+    (SERVICE_NAME = pdb1)
+    )
+)
