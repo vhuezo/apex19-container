@@ -16,7 +16,7 @@ ARG ORACLE_USER_ARG="oracle"
 ARG ORACLE_GROUP_ARG="oinstall"
 
 #Copy required files to /tmp/
-COPY LINUX.X64_180000_db_home.zip apex_19.1_en.zip dbca_silent.sh runsql.sh inst_apex.sql inst_apex2.sql css.sql dynamic_action_plugin_com_clarifit_apexplugin_ir_column_grouping.sql export.sql f9205_img.sql f9205_theme_1.sql f9205_theme_11.sql f9205_theme_17.sql f9205_theme_20.sql f9205_theme_21.sql f9205_theme_23.sql f9205.sql item_type_plugin_com_af_plugin_jq_fileupload.sql region_type_plugin_com_af_plugin_jq_menu.sql region_type_plugin_com_blogspot_apexnotes_apex_rds_customizable.sql static_file.sql suds_attr_dict.sql suds_uidefaults.sql suds-db-user.sql SUDS.sql runsql2.sh startupdb /tmp/
+COPY LINUX.X64_180000_db_home.zip apex_19.1_en.zip dbca_silent.sh runsql.sh inst_apex.sql inst_apex2.sql css.sql dynamic_action_plugin_com_clarifit_apexplugin_ir_column_grouping.sql export.sql f9205_img.sql f9205_theme_1.sql f9205_theme_11.sql f9205_theme_17.sql f9205_theme_20.sql f9205_theme_21.sql f9205_theme_23.sql f9205.sql item_type_plugin_com_af_plugin_jq_fileupload.sql region_type_plugin_com_af_plugin_jq_menu.sql region_type_plugin_com_blogspot_apexnotes_apex_rds_customizable.sql static_file.sql suds_attr_dict.sql suds_uidefaults.sql suds-db-user.sql SUDS.sql startupdb /tmp/
 
 #Install required packages and tools
 RUN /usr/bin/yum update -y -q && \
@@ -65,7 +65,6 @@ ${ORACLE_HOME_ARG}/bin/netca /silent /responsefile ${ORACLE_HOME_ARG}/assistants
 /bin/bash /tmp/dbca_silent.sh && \
 cd ${APEX_HOME_ARG}/apex && \
 /bin/bash /tmp/runsql.sh && \
-/bin/bash /tmp/runsql2.sh && \
 echo -e "LISTENER = \n  (DESCRIPTION_LIST = \n    (DESCRIPTION = \n      (ADDRESS = (PROTOCOL = TCP)(HOST = ${ORACLE_HOSTNAME_ARG})(PORT = ${LISTENER_PORT_ARG}))\n      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))\n    )\n  )\n" > ${ORACLE_HOME_ARG}/network/admin/listener.ora && \
 echo ${CDB_NAME_ARG}:${ORACLE_HOME_ARG}:Y > /etc/oratab
 
