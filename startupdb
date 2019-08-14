@@ -1,11 +1,6 @@
 #!/bin/bash
 source ~/.bashrc
 
-if [ ! -z ${COPYDB} ]; then
-    echo "Copying db to persistent volume ${COPYDB}..."
-    cd /u02; tar cf - * | ( cd ${COPYDB}; tar xfp -)
-    exit
-fi
 #startup database and listener
 $ORACLE_HOME/bin/dbstart $ORACLE_HOME
 
